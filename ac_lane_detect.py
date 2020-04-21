@@ -24,19 +24,21 @@ from findLane import mask_roi, mask_window, find_window_centroids, show_window_c
 from drawLane import draw_lane
 #import classLine
 
+'''
 #Lab setting
 X1 = 90
 Y1 = 60
 X2 = 990
 Y2 = 900
+'''
 
-'''
+
 #3Secondz setting
-X1 = 90
-Y1 = 60
-X2 = 990
-Y2 = 900
-'''
+X1 = 2000
+Y1 = 310
+X2 = 2900
+Y2 = 830
+
 
 nx = 9
 ny = 6
@@ -86,13 +88,15 @@ if __name__ == '__main__':
 
 
 
-        output = np.zeros((int(warp_y),int(screen_x/2+warp_x),3), dtype = "uint8")
-     
-        output = np.zeros((int(screen_y), int(screen_x/2),3),dtype='uint8')
+        output = np.zeros((int(screen_y*2), int(screen_x),3),dtype='uint8')
 
-        img_fin = cv2.cvtColor(img_org, cv2.COLOR_RGB2GRAY)
+        img_gray = cv2.cvtColor(img_org, cv2.COLOR_RGB2GRAY)
 
-        img_gray = np.zeros_like(img_fin[:,:,0])
+        img_fin = np.zeros_like(img_org)
+        img_fin[:,:,0] = img_gray
+        img_fin[:,:,1] = img_gray
+        img_fin[:,:,2] = img_gray
+        print(img_gray.shape)
 
         
 
@@ -100,7 +104,7 @@ if __name__ == '__main__':
         #img_fin = img_org
   
         output[0:int(screen_y), 0:int(screen_x)] = img_org
-        output[int(screen_y):int(screen_y*2), 0:int(screen_x)] = img_gray
+        output[int(screen_y):int(screen_y*2), 0:int(screen_x)] = img_fin
         cv2.line(output, (0,int(screen_y)),(int(screen_x), int(screen_y)),(0,255,255),5)
    
         cv2.imshow('TEST_WINDOW', output)
