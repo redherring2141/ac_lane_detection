@@ -24,21 +24,25 @@ from findLane import mask_roi, mask_window, find_window_centroids, show_window_c
 from drawLane import draw_lane
 #import classLine
 
-'''
+
 #Lab setting
 X1 = 90
 Y1 = 60
 X2 = 990
 Y2 = 900
-'''
+FX = 0.5
+FY = 0.5
 
+'''
 
 #3Secondz setting
 X1 = 2000
 Y1 = 310
 X2 = 2900
 Y2 = 830
-
+FX = 1
+FY = 1
+'''
 
 nx = 9
 ny = 6
@@ -84,27 +88,32 @@ if __name__ == '__main__':
         screen_np = np.array(screen_pil.convert('RGB'))
         # frame = cv2.cvtColor(cv2.resize(screen_np, (0,0), fx=0.5, fy=0.5), cv2.COLOR_RGB2BGR)
         frame = cv2.cvtColor(screen_np, cv2.COLOR_RGB2BGR)
-        img_org = cv2.resize(frame,(0,0), fx=1, fy=1)
+        img_org = cv2.resize(frame,(0,0), fx=FX, fy=FY)
 
 
 
-        output = np.zeros((int(screen_y*2), int(screen_x),3),dtype='uint8')
+        output = np.zeros((int(screen_y*FY*2), int(screen_x*FX),3),dtype='uint8')
 
         img_gray = cv2.cvtColor(img_org, cv2.COLOR_RGB2GRAY)
 
+        
+        img_hls_ch_s = hls_select(img_org, ch='s', thresh=(125,190))*255
+
+        img_bin = img_hls_ch_s
+
         img_fin = np.zeros_like(img_org)
-        img_fin[:,:,0] = img_gray
-        img_fin[:,:,1] = img_gray
-        img_fin[:,:,2] = img_gray
-        print(img_gray.shape)
+        img_fin[:,:,0] = img_bin
+        img_fin[:,:,1] = img_bin
+        img_fin[:,:,2] = img_bin
+        #print(img_gray.shape)
 
         
 
 
         #img_fin = img_org
   
-        output[0:int(screen_y), 0:int(screen_x)] = img_org
-        output[int(screen_y):int(screen_y*2), 0:int(screen_x)] = img_fin
+        output[0:int(screen_y*FY), 0:int(screen_x*FX)] = img_org
+        output[int(screen_y*FY):int(screen_y*FY*2), 0:int(screen_x*FX)] = img_fin
         cv2.line(output, (0,int(screen_y)),(int(screen_x), int(screen_y)),(0,255,255),5)
    
         cv2.imshow('TEST_WINDOW', output)
