@@ -97,7 +97,7 @@ if __name__ == '__main__':
         img_gray = cv2.cvtColor(img_org, cv2.COLOR_RGB2GRAY)
 
         
-        img_hls_ch_s = hls_select(img_org, ch='s', thresh=(125,190))*255
+        img_hls_ch_s = hls_select(img_org, ch='s', thresh=(20,80))*255
 
         img_bin = img_hls_ch_s
 
