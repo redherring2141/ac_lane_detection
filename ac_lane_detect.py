@@ -101,14 +101,16 @@ if __name__ == '__main__':
         
         img_hls_ch_s = hls_select(img_roi, ch='s', thresh=(30,80))*255
 
-        #img_grad_abx = abs_sobel_th(img_pers, orient='x', ksize=ks, thresh=(35,115))
-        #img_grad_mag = mag_sobel_th(img_pers, ksize=ks, thresh=(35,115))
-        #img_grad_dir = dir_sobel_th(img_pers, ksize=7, thresh=(0.8,1.4))
-        #img_wlane_th = threshold(cv2.cvtColor(img_pers, cv2.COLOR_RGB2GRAY), thresh=(225,255))
+        img_grad_abx = abs_sobel_th(img_roi, orient='x', ksize=ks, thresh=(35,225))*255
+        img_grad_aby = abs_sobel_th(img_roi, orient='y', ksize=ks, thresh=(35,225))*255
+        img_grad_mag = mag_sobel_th(img_roi, ksize=ks, thresh=(35,115))*255
+        #img_grad_dir = dir_sobel_th(img_roi, ksize=7, thresh=(1.57,3.14))*255
+        img_wlane_th = threshold(cv2.cvtColor(img_roi, cv2.COLOR_RGB2GRAY), thresh=(125,255))*255
 
 
         
-        img_bin = img_hls_ch_s
+        #img_bin = img_hls_ch_s
+        img_bin = img_wlane_th
 
         img_fin = np.zeros_like(img_org)
         img_fin[:,:,0] = img_bin
