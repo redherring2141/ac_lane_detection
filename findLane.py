@@ -24,13 +24,14 @@ def mask_roi(img):
     v = np.array([[l_bot_l, l_top_l, l_top_r, l_bot_r], [r_bot_l, r_top_l, r_top_r, r_bot_r]], dtype=np.int32)
     
     mask = np.zeros_like(img)
-    cv2.fillPoly(mask, v, 255)
+    cv2.fillPoly(mask, v, (255,255,255))
     
     img_masked = cv2.bitwise_and(img, mask)
     
     binary_output = np.copy(img_masked)
     
-    return binary_output
+    #return binary_output
+    return img_masked
 
 
 def mask_window(width, height, img_ref, center,level):

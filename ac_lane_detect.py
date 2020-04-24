@@ -98,8 +98,8 @@ if __name__ == '__main__':
 
         img_roi = mask_roi(img_org)
 
-        '''
-        img_hls_ch_s = hls_select(img_org, ch='s', thresh=(30,80))*255
+        
+        img_hls_ch_s = hls_select(img_roi, ch='s', thresh=(30,80))*255
 
         #img_grad_abx = abs_sobel_th(img_pers, orient='x', ksize=ks, thresh=(35,115))
         #img_grad_mag = mag_sobel_th(img_pers, ksize=ks, thresh=(35,115))
@@ -115,8 +115,9 @@ if __name__ == '__main__':
         img_fin[:,:,1] = img_bin
         img_fin[:,:,2] = img_bin
         #print(img_gray.shape)
-        '''
-        img_fin = img_roi
+        
+
+        #img_fin = img_roi
 
         
 
