@@ -24,7 +24,7 @@ from findLane import mask_roi, mask_window, find_window_centroids, show_window_c
 from drawLane import draw_lane
 #import classLine
 
-
+'''
 #Lab setting
 X1 = 90
 Y1 = 60
@@ -42,7 +42,7 @@ X2 = 2900
 Y2 = 830
 FX = 1
 FY = 1
-'''
+
 
 nx = 9
 ny = 6
@@ -96,9 +96,18 @@ if __name__ == '__main__':
 
         img_gray = cv2.cvtColor(img_org, cv2.COLOR_RGB2GRAY)
 
-        
-        img_hls_ch_s = hls_select(img_org, ch='s', thresh=(20,80))*255
+        img_roi = mask_roi(img_org)
 
+        '''
+        img_hls_ch_s = hls_select(img_org, ch='s', thresh=(30,80))*255
+
+        #img_grad_abx = abs_sobel_th(img_pers, orient='x', ksize=ks, thresh=(35,115))
+        #img_grad_mag = mag_sobel_th(img_pers, ksize=ks, thresh=(35,115))
+        #img_grad_dir = dir_sobel_th(img_pers, ksize=7, thresh=(0.8,1.4))
+        #img_wlane_th = threshold(cv2.cvtColor(img_pers, cv2.COLOR_RGB2GRAY), thresh=(225,255))
+
+
+        
         img_bin = img_hls_ch_s
 
         img_fin = np.zeros_like(img_org)
@@ -106,6 +115,8 @@ if __name__ == '__main__':
         img_fin[:,:,1] = img_bin
         img_fin[:,:,2] = img_bin
         #print(img_gray.shape)
+        '''
+        img_fin = img_roi
 
         
 

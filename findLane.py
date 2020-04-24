@@ -10,16 +10,16 @@ def mask_roi(img):
     w=img.shape[1]
     
     #left side
-    l_bot_l = (unit*2.25, h)
-    l_bot_r = (unit*3.1, h)
-    l_top_l = (unit*2.0, 0)
-    l_top_r = (unit*4.5, 0)
+    l_bot_l = (unit*0, h*0.45)
+    l_bot_r = (w, h*0.45)
+    l_top_l = (unit*0, h*0.75)
+    l_top_r = (w, h*0.75)
     
     #right side
-    r_bot_l = (unit*7.6, h)
-    r_bot_r = (unit*8.0, h)
-    r_top_l = (unit*7.2, 0)
-    r_top_r = (unit*9.0, 0)
+    r_bot_l = (unit*0, h*0)
+    r_bot_r = (w, h*0)
+    r_top_l = (unit*0, h*0)
+    r_top_r = (w, h*0)
     
     v = np.array([[l_bot_l, l_top_l, l_top_r, l_bot_r], [r_bot_l, r_top_l, r_top_r, r_bot_r]], dtype=np.int32)
     
