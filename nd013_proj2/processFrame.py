@@ -73,13 +73,13 @@ def process_frame(self, img_org, flag=False):
         
 
 
-    img_hls_ch_s = hls_select(img_pers, ch='s', thresh=(125,190))
+    img_hls_ch_s = hls_select(img_pers, ch='s', thresh=(30,80))
 
-    img_grad_abx = abs_sobel_th(img_pers, orient='x', ksize=ks, thresh=(35,115))
+    img_grad_abx = abs_sobel_th(img_pers, orient='x', ksize=ks, thresh=(35,225))
     img_grad_mag = mag_sobel_th(img_pers, ksize=ks, thresh=(35,115))
-    img_grad_dir = dir_sobel_th(img_pers, ksize=7, thresh=(0.8,1.4))
+    img_grad_dir = dir_sobel_th(img_pers, ksize=7, thresh=(1.57,3.14))
 
-    img_wlane_th = threshold(cv2.cvtColor(img_pers, cv2.COLOR_RGB2GRAY), thresh=(225,255))
+    img_wlane_th = threshold(cv2.cvtColor(img_pers, cv2.COLOR_RGB2GRAY), thresh=(125,255))
     img_roi_wlane = mask_roi(img_wlane_th)
 
     img_ylane_th = threshold(img_pers[:,:,0], thresh=(235,255))
