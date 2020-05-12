@@ -160,3 +160,66 @@ def dir_sobel_th(img, ksize=31, thresh=(0.5,1.5)):
 
 #def combine_imgbin(img, ks=3, orient='x', th_sb=(0,255), th_r=(0,255), th_g=(0,255), th_b=(0,255)):
     
+def adjust_threshold(img_gray):
+
+    threshold = [0 , 68]
+
+    kernel = 9
+
+    direction = [0.7, 1.3]
+    direction_delta = 0.01
+
+    gray = cv2.cvtColor(img_gray, cv2.COLOR_RGB2GRAY)
+
+
+    cv2.namedWindow('test', cv2.WINDOW_NORMAL)
+
+    cv2.waitKey(0)
+
+    while True:
+        key = cv2.waitKey(1000)
+        print("key = ", key)
+        if key == 55: # key "Home"
+            if threshold[0] > 0:
+                threshold[0] = threshold[0] - 1
+            if direction[0] > 0:
+                direction[0] = direction[0] - direction_delta
+
+        if key == 57: # key "PgUp"
+            if threshold[0] < threshold[1]:
+                threshold[0] = threshold[0] + 1
+
+            if direction[0] < direction[1] - direction_delta:
+                direction[0] = direction[0] + direction_delta
+
+        if key == 2424832: # left arrow
+            if threshold[1] > threshold[0]:
+                threshold[1] = threshold[1] - 1
+
+            if direction[1] > direction[0] + direction_delta:
+                direction[1] = direction[1] - direction_delta
+
+        if key == 2555904: # right arrow
+            if threshold[1] < 255:
+                threshold[1] = threshold[1] + 1
+
+            if direction[1] < np.pi/2:
+                direction[1] = direction[1] + direction_delta
+
+        if key == 49: # key "End"
+            if(kernel > 2):
+                kernel = kernel - 2
+        if key == 51: # key "PgDn"
+            if(kernel < 31):
+                kernel = kernel + 2
+
+        if key == 27: # ESC
+            break
+
+        binary = np.zeros_like(img_gray)
+        binary[(gray >= threshold[0]) & (gray <= threshold[1])] = 1
+
+        cv2.imshow("test", 255*binary)
+        print(threshold)
+        print(direction)
+        print(kernel)

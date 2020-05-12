@@ -7,16 +7,12 @@ import os
 import math
 import pickle
 
-
 from calibrateCam import findPts, calibrate, calibrateCam
 from transformImage import undistort, corners_unwarp
-from thresholdColorGrad import threshold, hls_select, lab_select, luv_select, abs_sobel_th, mag_sobel_th, dir_sobel_th
+from thresholdColorGrad import adjust_threshold, threshold, hls_select, lab_select, luv_select, abs_sobel_th, mag_sobel_th, dir_sobel_th
 from findLane import mask_roi, mask_window, find_window_centroids, show_window_centroids, polyfit_window, measure_curve_r, get_offset
 from drawLane import draw_lane
 import classLine
-
-
-
 
     
 nx = 9
@@ -28,16 +24,6 @@ h_win = 92
 margin = 25
 font = cv2.FONT_HERSHEY_DUPLEX
 
-# Read in the saved camera matrix and distortion coefficients
-# These are the arrays you calculated using cv2.calibrateCamera()
-#path_imgs = "../camera_cal/calibration*.jpg"
-#objpoints, imgpoints = findPts(path_imgs)
-#ret, mtx, dist, rvecs, tvecs = calibrate(objpoints, imgpoints)
-
-#img_sample = cv2.imread('../test_images/straight_lines1.jpg')
-
-#h_img = img_sample.shape[0]
-#w_img = img_sample.shape[1]
 src_x1 = 544
 src_y1 = 470
 src_x2 = 128
@@ -55,14 +41,16 @@ dst = np.float32([[dst_x, dst_y], [w_img-dst_x, dst_y],
 
 dist_diff_squa_stack = []
 
-
 #org
 def process_frame(self, img_org, flag=False):
-    
- #   img_undist = undistort(img_org, mtx, dist)
- #   img_pers, Mpers = corners_unwarp(img_undist, src, dst)
+
+    adjust_threshold(img_org)
+
+
+
+
+    '''    
     img_pers = np.copy(img_org)
-    
     
     h_img = img_org.shape[0]
     w_img = img_org.shape[1]
@@ -70,8 +58,9 @@ def process_frame(self, img_org, flag=False):
     src = np.float32([[src_x1, src_y1], [w_img-src_x1, src_y1], [src_x2, src_y2], [w_img-src_x2, src_y2]])
     dst = np.float32([[dst_x, dst_y], [w_img-dst_x, dst_y], [dst_x, h_img], [w_img-dst_x, h_img]])
     Minvs = cv2.getPerspectiveTransform(dst, src)
-        
 
+    #img_undist = undistort(img_org, mtx, dist)
+    #img_pers, Mpers = corners_unwarp(img_undist, src, dst)
 
     img_hls_ch_s = hls_select(img_pers, ch='s', thresh=(30,80))
 
@@ -125,22 +114,4 @@ def process_frame(self, img_org, flag=False):
         show_window_centroids(img_combined, w_win, h_win, win_c)
         return img_fin, img_grad_abx, img_grad_mag, img_grad_dir, img_combined, show_window_centroids, img_wline_th, img_yline_th
 
-
-'''
-cap = cv2.VideoCapture("../../ac_laguna_mx5_2.mp4")
-
-if (cap.isOpened() == False):
-    print("Error opening video stream or file")
-
-while(cap.isOpened()):
-    ret, img = cap.read()
-    if ret == True:
-        cv2.imshow('Output', process_frame(img_org = img))
-        if cv2.waitKey(25) & 0xFF == ord('q'):
-            break
-    else:
-        break
-
-cap.release()
-cv2.destroyAllWindows()
-'''
+    '''
