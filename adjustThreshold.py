@@ -32,10 +32,10 @@ def adjust_threshold(key, threshold, direction, kernel):
         if direction[1] < np.pi/2:
             direction[1] = direction[1] + direction_delta
 
-    if key == 49: # key "End"
+    if key == 111: # key "O"
         if(kernel > 2):
             kernel = kernel - 2
-    if key == 51: # key "PgDn"
+    if key == 112: # key "P"
         if(kernel < 31):
             kernel = kernel + 2
 
