@@ -158,5 +158,28 @@ def dir_sobel_th(img, ksize=31, thresh=(0.5,1.5)):
     return img_bin
 
 
+def hls_wy_bin(img):
+    img_hls = cv2.cvtColor(img, cv2.COLOR_RGB2HLS)
+    # Compute a binary thresholded image where yellow is isolated from HLS components
+    img_hls_yellow_bin = np.zeros_like(img_hls[:,:,0])
+    img_hls_yellow_bin[((img_hls[:,:,0] >= 15) & (img_hls[:,:,0] <= 35))
+                 & ((img_hls[:,:,1] >= 30) & (img_hls[:,:,1] <= 204))
+                 & ((img_hls[:,:,2] >= 115) & (img_hls[:,:,2] <= 255))                
+                ] = 1
+    
+    # Compute a binary thresholded image where white is isolated from HLS components
+    img_hls_white_bin = np.zeros_like(img_hls[:,:,0])
+    img_hls_white_bin[((img_hls[:,:,0] >= 0) & (img_hls[:,:,0] <= 255))
+                 & ((img_hls[:,:,1] >= 200) & (img_hls[:,:,1] <= 255))
+                 & ((img_hls[:,:,2] >= 0) & (img_hls[:,:,2] <= 255))                
+                ] = 1
+    
+    # Now combine both
+    img_hls_white_yellow_bin = np.zeros_like(img_hls[:,:,0])
+    img_hls_white_yellow_bin[(img_hls_yellow_bin == 1) | (img_hls_white_bin == 1)] = 1
+
+    return img_hls_white_yellow_bin
+
+
 #def combine_imgbin(img, ks=3, orient='x', th_sb=(0,255), th_r=(0,255), th_g=(0,255), th_b=(0,255)):
     
